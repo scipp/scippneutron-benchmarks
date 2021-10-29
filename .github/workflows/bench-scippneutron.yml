@@ -16,6 +16,23 @@ jobs:
       - name: Clone Scipp Neutron
         shell: bash -l {0}
         run: git clone https://github.com/scipp/scippneutron repo
+        
+      - name: Check if commit already benched
+        shell: bash -l {0}
+        run: |
+          export SCIPP_COMMIT_HASH="$(command git ls-remote https://github.com/scipp/scippneutron HEAD | head -n1 | sed -e 's/\s.*$//')"
+          if grep -Fxl "$SCIPP_COMMIT_HASH" scipp_commit_hash; then exit 1; fi
+          echo "$SCIPP_COMMIT_HASH" > scipp_commit_hash
+
+      - name: Cache conda pkgs
+        uses: actions/cache@v2
+        env:
+          # Increase this value to reset cache if etc/example-environment.yml has not changed
+          CACHE_NUMBER: 0
+        with:
+          path: ~/conda_pkgs_dir
+          key:
+            ${{ runner.os }}-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('repo/scipp-developer.yml') }}
 
       - name: Setup Mambaforge and Scipp Neutron dev env
         uses: conda-incubator/setup-miniconda@v2.1.1
@@ -44,6 +61,7 @@ jobs:
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add results/\*
+          git add scipp_commit_hash
           git commit -m "[Bot] Update results"
 
       - name: Push changes
