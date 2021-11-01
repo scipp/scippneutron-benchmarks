@@ -53,7 +53,10 @@ jobs:
 
       - name: Run asv benchmarks
         shell: bash -l {0}
-        run: asv run -v -m cloud-container -e
+        run: |
+          # Use mamba for env creation
+          export CONDA_EXE=$(which mamba)
+          asv run -v -m cloud-container -e
 
       - name: Commit changes and new results to github pages
         shell: bash -l {0}
