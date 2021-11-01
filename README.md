@@ -1,5 +1,7 @@
 # scippneutron-benchmarks
 
+Benchmarks are visible here: https://scipp.github.io/scippneutron-benchmarks/
+
 Using ASV (http://github.com/airspeed-velocity/asv/) to perform benchmarks on the Scipp library.
 
 This implementation of ASV assumes you have a copy of the scipp repository in a folder names "repo", so in order for this to run properly locally, like in our CI:
