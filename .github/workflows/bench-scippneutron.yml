@@ -24,23 +24,25 @@ jobs:
           if grep -Fxl "$SCIPP_COMMIT_HASH" scipp_commit_hash; then exit 1; fi
           echo "$SCIPP_COMMIT_HASH" > scipp_commit_hash
 
+      - run: python repo/tools/metatoenv.py --dir=repo/conda --env-file=buildenv.yml --channels=conda-forge
+
       - name: Cache conda pkgs
         uses: actions/cache@v2
         env:
-          # Increase this value to reset cache if etc/example-environment.yml has not changed
+          # Increase this value to reset cache if buildenv.yml has not changed
           CACHE_NUMBER: 0
         with:
           path: ~/conda_pkgs_dir
           key:
-            ${{ runner.os }}-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('repo/scipp-developer.yml') }}
+            ${{ runner.os }}-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('buildenv.yml') }}
 
       - name: Setup Mambaforge and Scipp Neutron dev env
         uses: conda-incubator/setup-miniconda@v2.1.1
         with:
           miniforge-version: latest
           miniforge-variant: Mambaforge
-          environment-file: repo/scippneutron-developer.yml
-          activate-environment: scippneutron-developer
+          environment-file: buildenv.yml
+          activate-environment: buildenv
           auto-activate-base: false
 
       - name: Install asv
@@ -50,6 +52,10 @@ jobs:
       - name: Configure asv
         shell: bash -l {0}
         run: asv machine --machine cloud-container --os "Ubuntu latest" --arch 'x86_64' --cpu "2 Core CPU" --num_cpu 2 --ram '7GB'
+
+      - name: Run asv update
+        shell: bash -l {0}
+        run: asv update
 
       - name: Run asv benchmarks
         shell: bash -l {0}

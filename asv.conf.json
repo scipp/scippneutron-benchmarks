@@ -75,27 +75,26 @@
     // followed by the pip installed packages).
     //
      "matrix": {
-         "ninja": [""],
-         "scipp::scipp": [""],
-         "conan": [""],
          "cmake": [""],
-         "pip": [""],
-         "appdirs": [""],
+         "conan": [""],
+         "confuse": [""],
+         "ess-dmsc::ess-streaming-data-types": [""],
+         "h5py": [""],
          "ipykernel": ["6.3.1"],
          "ipympl": [""],
          "ipywidgets": [""],
          "mantid-framework": [""],
          "matplotlib-base": [""],
+         "ninja": [""],
          "numpy": [""],
-         "python-configuration": [""],
+         "pip": [""],
+         "pooch": [""],
+         "python-confluent-kafka": [""],
          "pythreejs": [""],
          "pyyaml": [""],
-         "tbb": [""],
-         "h5py": [""],
-         "python-confluent-kafka": [""],
-         "ess-dmsc::ess-streaming-data-types": [""],
+         "scipp::scipp": [""],
          "scipy": [""],
-         "pooch": [""]
+         "tbb": [""]
      },
 
     // Combinations of libraries/python versions can be excluded/included
