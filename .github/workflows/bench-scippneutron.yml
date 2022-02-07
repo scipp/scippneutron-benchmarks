@@ -24,7 +24,7 @@ jobs:
           if grep -Fxl "$SCIPP_COMMIT_HASH" scipp_commit_hash; then exit 1; fi
           echo "$SCIPP_COMMIT_HASH" > scipp_commit_hash
 
-      - run: python repo/tools/metatoenv.py --dir=repo/conda --env-file=buildenv.yml --channels=conda-forge
+      - run: python repo/tools/metatoenv.py --dir=repo/conda --env-file=buildenv.yml --channels=conda-forge,scipp,ess-dmsc
 
       - name: Cache conda pkgs
         uses: actions/cache@v2
